@@ -13,6 +13,10 @@
 		04DB79F6238A6EBF00E82785 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04DB79F4238A6EBF00E82785 /* Main.storyboard */; };
 		04DB79F8238A6EC000E82785 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04DB79F7238A6EC000E82785 /* Assets.xcassets */; };
 		04DB79FB238A6EC000E82785 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04DB79F9238A6EC000E82785 /* LaunchScreen.storyboard */; };
+		04DB7A03238A7E0500E82785 /* FirstCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB7A02238A7E0500E82785 /* FirstCollectionViewCell.swift */; };
+		04DB7A05238A96CA00E82785 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB7A04238A96CA00E82785 /* SecondViewController.swift */; };
+		04DB7A07238A9AF900E82785 /* SecondCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB7A06238A9AF900E82785 /* SecondCollectionViewCell.swift */; };
+		04DB7A09238A9E7000E82785 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB7A08238A9E7000E82785 /* ThirdViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		04DB79F7238A6EC000E82785 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04DB79FA238A6EC000E82785 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04DB79FC238A6EC000E82785 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04DB7A02238A7E0500E82785 /* FirstCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCollectionViewCell.swift; sourceTree = "<group>"; };
+		04DB7A04238A96CA00E82785 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		04DB7A06238A9AF900E82785 /* SecondCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondCollectionViewCell.swift; sourceTree = "<group>"; };
+		04DB7A08238A9E7000E82785 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,10 @@
 				04DB79F7238A6EC000E82785 /* Assets.xcassets */,
 				04DB79F9238A6EC000E82785 /* LaunchScreen.storyboard */,
 				04DB79FC238A6EC000E82785 /* Info.plist */,
+				04DB7A02238A7E0500E82785 /* FirstCollectionViewCell.swift */,
+				04DB7A04238A96CA00E82785 /* SecondViewController.swift */,
+				04DB7A06238A9AF900E82785 /* SecondCollectionViewCell.swift */,
+				04DB7A08238A9E7000E82785 /* ThirdViewController.swift */,
 			);
 			path = "start4-4";
 			sourceTree = "<group>";
@@ -140,7 +152,11 @@
 			files = (
 				04DB79F3238A6EBF00E82785 /* ViewController.swift in Sources */,
 				04DB79EF238A6EBF00E82785 /* AppDelegate.swift in Sources */,
+				04DB7A07238A9AF900E82785 /* SecondCollectionViewCell.swift in Sources */,
+				04DB7A09238A9E7000E82785 /* ThirdViewController.swift in Sources */,
 				04DB79F1238A6EBF00E82785 /* SceneDelegate.swift in Sources */,
+				04DB7A05238A96CA00E82785 /* SecondViewController.swift in Sources */,
+				04DB7A03238A7E0500E82785 /* FirstCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
