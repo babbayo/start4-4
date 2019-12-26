@@ -9,10 +9,13 @@
 import UIKit
 import Photos
 
+
 class SecondViewController: UIViewController, UICollectionViewDelegate,  UICollectionViewDataSource, PHPhotoLibraryChangeObserver, UINavigationBarDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var toolBarActionItem: UIBarButtonItem!
     @IBOutlet weak var toolBarSortingItem: UIBarButtonItem!
+    @IBOutlet weak var toolBarTrashItem: UIBarButtonItem!
     @IBOutlet weak var naviBarEditItem: UIBarButtonItem!
     var isRecentSorting = true;
     var isEditableMode = false;
@@ -21,12 +24,16 @@ class SecondViewController: UIViewController, UICollectionViewDelegate,  UIColle
     var fetchResult: PHFetchResult<PHAsset>!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     let cellIdentifier: String = "cell2"
+    var selectedList : [IndexPath] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
     
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         guard let changes = changeInstance.changeDetails(for: fetchResult) else { return }
-        
         fetchResult = changes.fetchResultAfterChanges
-        
         OperationQueue.main.addOperation {
             self.collectionView.reloadSections(IndexSet(0...0))
         }
@@ -37,43 +44,141 @@ class SecondViewController: UIViewController, UICollectionViewDelegate,  UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellIdentifier, for: indexPath) as! SecondCollectionViewCell
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellIdentifier, for: indexPath) as! SecondCollectionViewCell
         
         let asset = fetchResult.object(at: indexPath.row)
         
         imageManager.requestImage(for: asset,
                                   targetSize: CGSize(width: 100, height: 100),
-                                  contentMode: .aspectFill, options: nil, resultHandler: { image, _ in cell.imageView?.image  = image})
+                                  contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
+                                    guard let img = image else { return }
+                                    cell.imageView.image  = img}
+        )
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return isEditableMode
-    }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("click")
-        if isEditableMode {
-            print("click2 아래 코드 를 실행시키고 싶어요")
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellIdentifier, for: indexPath) as! SecondCollectionViewCell
-            cell.layer.borderWidth = 1
-            cell.layer.borderColor = UIColor.red.cgColor
-            
-//            collectionView.reloadData()
-        } else {
-            // 선택하면 다음 페이지로 넘어가고 싶어요
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("when click cell")
+        if isEditableMode {
+            if let cell = collectionView.cellForItem(at: indexPath) {
+                if let selectedIndex = selectedList.firstIndex(of: indexPath) {
+                    cell.layer.borderWidth = 0
+                    cell.alpha = 1
+                    selectedList.remove(at: selectedIndex)
+                } else {
+                    cell.layer.borderWidth = 3
+                    cell.layer.borderColor = UIColor.black.cgColor
+                    cell.alpha = 0.5
+                    
+                    selectedList.append(indexPath)
+                }
+            }
+        } else {
+            print("segue")
+            self.performSegue(withIdentifier: "segueForThirdView", sender: indexPath)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nextController = segue.destination as? ThirdViewController {
+            if let indexPath = sender as? IndexPath {
+                nextController.fetchResult = fetchResult.object(at: indexPath.row) 
+            }
+        }
+    }
+    
+    @IBAction func touchUpEditingMode(_ sender: UIBarButtonItem) {
+        if isEditableMode {
+            isEditableMode = false
+            sender.title = "편집"
+            if let title = collection.localizedTitle {
+                self.navigationItem.title = title
+            }
+            self.selectedList.forEach { (index: IndexPath) in
+                if let cell = self.collectionView.cellForItem(at: index) {
+                    cell.layer.borderWidth = 0
+                    cell.alpha = 1
+                }
+            }
+            self.selectedList = [];
+            
+            self.toolBarTrashItem.isEnabled = false
+            self.toolBarActionItem.isEnabled = false
+            self.toolBarSortingItem.isEnabled = true
+        } else {
+            isEditableMode = true
+            sender.title = "취소"
+            self.navigationItem.title = "항목 선택"
+            self.toolBarTrashItem.isEnabled = true
+            self.toolBarActionItem.isEnabled = true
+            self.toolBarSortingItem.isEnabled = false
+        }
+        print("isEditable: \(isEditableMode)")
+    }
+    
+    @IBAction func touchUpSorting(_ sender: UIBarButtonItem) {
+        if isRecentSorting {
+            sender.title = "과거순"
+            let allPhotosOptions = PHFetchOptions()
+            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            let assets = PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
+            fetchResult = assets
+            isRecentSorting = false
+        } else {
+            sender.title = "최신순"
+            let allPhotosOptions = PHFetchOptions()
+            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+            let assets = PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
+            fetchResult = assets
+            isRecentSorting = true
+        }
         
-        
+        collectionView.reloadData()
+    }
+    
+    @IBAction func touchUpAction(_ sender: UIBarButtonItem) {
+        if isEditableMode {
+            print("action")
+            self.selectedList.forEach { (index: IndexPath) in
+                let asset = self.fetchResult.object(at: index.row)
+                imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
+                    DispatchQueue.main.async {
+                        let activityViewController = UIActivityViewController(
+                            activityItems: [image],
+                            applicationActivities: nil)
+                        activityViewController.popoverPresentationController?.sourceView = self.view
+                        self.present(activityViewController, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func touchUpTrash(_ sender: UIBarButtonItem) {
+        if isEditableMode {
+            print("trash")
+            PHPhotoLibrary.shared().performChanges({
+                let removeList = self.selectedList.map({ (index: IndexPath) -> PHAsset in
+                    return self.fetchResult.object(at: index.row)
+                })
+                PHAssetChangeRequest.deleteAssets(removeList as NSArray)
+            }, completionHandler: nil)
+            
+        }
+    }
+    
+    private func setupUI() {
+        // 타이틀
+        if let title = collection.localizedTitle {
+            self.navigationItem.title = title
+        }
+        self.toolBarTrashItem.isEnabled = false
+        self.toolBarActionItem.isEnabled = false
         
         let count = collection.estimatedAssetCount
         print(count)
@@ -97,36 +202,8 @@ class SecondViewController: UIViewController, UICollectionViewDelegate,  UIColle
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         let assets = PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
         fetchResult = assets
-    }
-    
-    @IBAction func touchUpEditingMode(_ sender: UIBarButtonItem) {
-        if isEditableMode {
-            sender.title = "편집"
-            isEditableMode = false
-        } else {
-            sender.title = "취소"
-            isEditableMode = true
-        }
-    }
-    
-    @IBAction func touchUpSorting(_ sender: UIBarButtonItem) {
-        if isRecentSorting {
-            sender.title = "과거순"
-            let allPhotosOptions = PHFetchOptions()
-            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-            let assets = PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
-            fetchResult = assets
-            isRecentSorting = false
-        } else {
-            sender.title = "최신순"
-            let allPhotosOptions = PHFetchOptions()
-            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-            let assets = PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
-            fetchResult = assets
-            isRecentSorting = true
-        }
         
-        collectionView.reloadData()
+        PHPhotoLibrary.shared().register(self)
     }
-
+    
 }

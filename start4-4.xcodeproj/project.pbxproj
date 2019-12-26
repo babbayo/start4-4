@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044737A123B49F850059A23A /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 044737A023B49F850059A23A /* View.xib */; };
 		04DB79EF238A6EBF00E82785 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB79EE238A6EBF00E82785 /* AppDelegate.swift */; };
 		04DB79F1238A6EBF00E82785 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB79F0238A6EBF00E82785 /* SceneDelegate.swift */; };
 		04DB79F3238A6EBF00E82785 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB79F2238A6EBF00E82785 /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		044737A023B49F850059A23A /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		04DB79EB238A6EBF00E82785 /* start4-4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "start4-4.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DB79EE238A6EBF00E82785 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04DB79F0238A6EBF00E82785 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				04DB7A04238A96CA00E82785 /* SecondViewController.swift */,
 				04DB7A06238A9AF900E82785 /* SecondCollectionViewCell.swift */,
 				04DB7A08238A9E7000E82785 /* ThirdViewController.swift */,
+				044737A023B49F850059A23A /* View.xib */,
 			);
 			path = "start4-4";
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				044737A123B49F850059A23A /* View.xib in Resources */,
 				04DB79FB238A6EC000E82785 /* LaunchScreen.storyboard in Resources */,
 				04DB79F8238A6EC000E82785 /* Assets.xcassets in Resources */,
 				04DB79F6238A6EBF00E82785 /* Main.storyboard in Resources */,

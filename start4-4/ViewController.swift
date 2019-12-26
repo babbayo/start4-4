@@ -26,9 +26,7 @@ class ViewController: UIViewController, PHPhotoLibraryChangeObserver, UICollecti
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellIdentifier, for: indexPath) as! FirstCollectionViewCell
         
-        
         let assetCollection = fetchResult.object(at: indexPath.row)
-        
         if let title = assetCollection.localizedTitle {
             cell.label1.text = title
         }
